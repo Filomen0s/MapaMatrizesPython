@@ -1,4 +1,6 @@
 import os
+import keyboard
+import time
 
 def limpar_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -8,6 +10,7 @@ def mostrarMapa(mapa):
     for linha in mapa:
         mapaVisual = [' ' if valor == '' else valor for valor in linha]
         print(mapaVisual)
+        
 
 def mostrarCordMapa(mapa):
     limpar_terminal()
@@ -36,7 +39,6 @@ mostrarCordMapa(mapa)
 qntObstaculos = int(input('\nQuantos obstáculos deseja adicionar?: '))
 
 while qntObstaculos >= 25:
-    limpar_terminal()
     qntObstaculos = int(input('\nInsira um valor menor que 25!: '))
 
 for i in range(qntObstaculos):
@@ -45,10 +47,10 @@ for i in range(qntObstaculos):
     obstaculo_X = int(input('\nCoordenada X: ')) - 1
     obstaculo_Y = int(input('Coordenada Y: ')) - 1
     
-    while mapa[obstaculo_Y][obstaculo_X] == 'x':
+    while obstaculo_X > 4 or obstaculo_Y > 4 or mapa[obstaculo_Y][obstaculo_X] == 'x':
         mostrarCordMapa(mapa)
-        print('Essas coordenadas ja possuem um obstaculo!')
-        obstaculo_X = int(input('\nCoordenada X: ')) - 1
+        print('\nEssas coordenadas ja possuem um obstaculo ou está fora da área!')
+        obstaculo_X = int(input('Coordenada X: ')) - 1
         obstaculo_Y = int(input('Coordenada Y: ')) - 1
         
     mapa[obstaculo_Y][obstaculo_X] = 'x'
@@ -59,11 +61,11 @@ mostrarCordMapa(mapa)
 
 print('Insira o jogador:')
 insJogador_X = int(input('\nCoordenada X: ')) - 1
-insJogador_Y = int(input('\nCoordenada Y: ')) - 1
+insJogador_Y = int(input('Coordenada Y: ')) - 1
 
-while mapa[insJogador_Y][insJogador_X] == 'x':
+while insJogador_X > 5 or insJogador_Y > 5 or mapa[insJogador_Y][insJogador_X] == 'x':
     mostrarCordMapa(mapa)
-    print('Essas coordenadas ja possuem um obstaculo!')
+    print('Essas coordenadas ja possuem um obstaculo ou está fora da área!')
     insJogador_X = int(input('\nCoordenada X: ')) - 1
     insJogador_Y = int(input('Coordenada Y: ')) - 1
 
@@ -85,6 +87,9 @@ def cima():
         mapa[jogador_y][jogador_x] = ''
         jogador_y -= 1
         mapa[jogador_y][jogador_x] = 'j'
+        mostrarMapa(mapa)
+        print('\nQual direção deseja andar?(w/a/s/d)')
+        print('Sair: esc')
 
 def baixo():
 
@@ -98,11 +103,18 @@ def baixo():
             mapa[jogador_y][jogador_x] = ''
             jogador_y += 1
             mapa[jogador_y][jogador_x] = 'j'
+            mostrarMapa(mapa)
+            print('\nQual direção deseja andar?(w/a/s/d)')
+            print('Sair: esc')
             
     except IndexError:
-        mapa[jogador_y][jogador_x] = ''
-        jogador_y = 0
-        mapa[jogador_y][jogador_x] = 'j'
+        if mapa[0][jogador_x] == '':
+            mapa[jogador_y][jogador_x] = ''
+            jogador_y = 0
+            mapa[jogador_y][jogador_x] = 'j'
+            mostrarMapa(mapa)
+            print('\nQual direção deseja andar?(w/a/s/d)')
+            print('Sair: esc')
 
 def esquerda():
 
@@ -115,6 +127,9 @@ def esquerda():
         mapa[jogador_y][jogador_x] = ''
         jogador_x -= 1
         mapa[jogador_y][jogador_x] = 'j'
+        mostrarMapa(mapa)
+        print('\nQual direção deseja andar?(w/a/s/d)')
+        print('Sair: esc')
 
 def direita():
 
@@ -127,23 +142,40 @@ def direita():
             mapa[jogador_y][jogador_x] = ''
             jogador_x += 1
             mapa[jogador_y][jogador_x] = 'j'
+            mostrarMapa(mapa)
+            print('\nQual direção deseja andar?(w/a/s/d)')
+            print('Sair: esc')
+            
     except IndexError:
-        mapa[jogador_y][jogador_x] = ''
-        jogador_x = 0
-        mapa[jogador_y][jogador_x] = 'j'
+        if mapa[jogador_y][0] == '':
+            mapa[jogador_y][jogador_x] = ''
+            jogador_x = 0
+            mapa[jogador_y][jogador_x] = 'j'
+            mostrarMapa(mapa)
+            print('\nQual direção deseja andar?(w/a/s/d)')
+            print('Sair: esc')
 
+evento = keyboard.read_event()
+
+mostrarMapa(mapa)
+print('\nQual direção deseja andar?(w/a/s/d)')
+print('Sair: esc')
 while True:
-    mostrarMapa(mapa)
-    
-    andar = input('\nQual direção deseja andar?(w/a/s/d): ')
-    if True != 'x':
-        if andar == 'w':
-            cima()
-        elif andar == 'a':
-            esquerda()
-        elif andar == 's':
-            baixo()
-        elif andar == 'd':
-            direita()
-        else:
-            pass
+    time.sleep(0.15)
+
+    if keyboard.is_pressed('w'):
+        cima()
+    elif keyboard.is_pressed('a'):
+        esquerda()
+    elif keyboard.is_pressed('s'):
+        baixo()
+    elif keyboard.is_pressed('d'):
+        direita()
+    elif keyboard.is_pressed('esc'):
+        limpar_terminal()
+        print(f'Saindo...')
+        time.sleep(1)
+        limpar_terminal()
+        break
+    else:
+        pass
