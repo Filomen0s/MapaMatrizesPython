@@ -1,6 +1,6 @@
 import os
-import keyboard
 import time
+import keyboard #pip install keyboard
 
 def limpar_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
