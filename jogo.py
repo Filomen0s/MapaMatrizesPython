@@ -159,6 +159,7 @@ evento = keyboard.read_event()
 mostrarMapa(mapa)
 print('\nQual direção deseja andar?(w/a/s/d)')
 print('Sair: esc')
+
 while True:
     time.sleep(0.15)
 
