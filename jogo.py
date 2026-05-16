@@ -11,7 +11,6 @@ def mostrarMapa(mapa):
         mapaVisual = [' ' if valor == '' else valor for valor in linha]
         print(mapaVisual)
         
-
 def mostrarCordMapa(mapa):
     limpar_terminal()
     print('    1    2    3    4    5  ')
