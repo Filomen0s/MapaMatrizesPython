@@ -154,8 +154,6 @@ def direita():
             print('\nQual direção deseja andar?(w/a/s/d)')
             print('Sair: esc')
 
-evento = keyboard.read_event()
-
 mostrarMapa(mapa)
 print('\nQual direção deseja andar?(w/a/s/d)')
 print('Sair: esc')
@@ -173,7 +171,7 @@ while True:
         direita()
     elif keyboard.is_pressed('esc'):
         limpar_terminal()
-        print(f'Saindo...')
+        print('Saindo...')
         time.sleep(1)
         limpar_terminal()
         break
